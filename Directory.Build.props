@@ -1,0 +1,42 @@
+<Project>
+    <PropertyGroup Label="Code Properties">
+        <TargetFrameworks>netstandard2.1;net8.0;net9.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <LangVersion>13</LangVersion>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <IsPackable>true</IsPackable>
+        <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
+    </PropertyGroup>
+
+    <ItemGroup Label="Assembly Attributes">
+        <AssemblyAttribute Include="System.CLSCompliantAttribute">
+            <_Parameter1>true</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <PropertyGroup Label="Documentation">
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Code Analysis">
+        <WarningLevel>8</WarningLevel>
+        <AnalysisLevel>latest-all</AnalysisLevel>
+        <CheckForOverflowUnderflow Condition="'$(Configuration)' == 'Debug'">true</CheckForOverflowUnderflow>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Output and Nuget">
+        <DebugType Condition="'$(Configuration)' == 'Debug'">full</DebugType>
+        <DebugType Condition="'$(Configuration)' == 'Release'">portable</DebugType>
+        <IncludeSymbols>True</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+        <Version>0.0.0</Version>
+        <Authors>PerseverantDT</Authors>
+        <PackageLicenseExpression>MITNFA</PackageLicenseExpression>
+    </PropertyGroup>
+</Project>
