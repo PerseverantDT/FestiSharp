@@ -150,50 +150,30 @@ public readonly struct Position
         }
         charsWritten = nameof(Position).Length;
 
-        if (!("( ").AsSpan().TryCopyTo(destination[charsWritten..])) {
+        if (!("(").AsSpan().TryCopyTo(destination[charsWritten..])) {
             return false;
         }
-        charsWritten += 2;
+        charsWritten += 1;
 
-        if (!nameof(Line).AsSpan().TryCopyTo(destination[charsWritten..])) {
+        if (!Line.TryFormat(destination[charsWritten..], out int lineLength, format, provider)) {
             return false;
         }
-        charsWritten += nameof(Line).Length;
+        charsWritten += lineLength;
 
-        if (!(" = ").AsSpan().TryCopyTo(destination[charsWritten..])) {
+        if (!":".AsSpan().TryCopyTo(destination[charsWritten..])) {
             return false;
         }
-        charsWritten += 3;
+        charsWritten += 1;
 
-        if (!Line.TryFormat(destination[charsWritten..], out int charsSubtotal, format, provider)) {
+        if (!Column.TryFormat(destination[charsWritten..], out int columnLength, format, provider)) {
             return false;
         }
-        charsWritten += charsSubtotal;
+        charsWritten += columnLength;
 
-        if (!(", ").AsSpan().TryCopyTo(destination[charsWritten..])) {
+        if (!")".AsSpan().TryCopyTo(destination[charsWritten..])) {
             return false;
         }
-        charsWritten += 2;
-
-        if (!nameof(Column).AsSpan().TryCopyTo(destination[charsWritten..])) {
-            return false;
-        }
-        charsWritten += nameof(Column).Length;
-
-        if (!(" = ").AsSpan().TryCopyTo(destination[charsWritten..])) {
-            return false;
-        }
-        charsWritten += 3;
-
-        if (!Column.TryFormat(destination[charsWritten..], out charsSubtotal, format, provider)) {
-            return false;
-        }
-        charsWritten += charsSubtotal;
-
-        if (!(" )").AsSpan().TryCopyTo(destination[charsWritten..])) {
-            return false;
-        }
-        charsWritten += 2;
+        charsWritten += 1;
 
         return true;
     }
@@ -214,21 +194,19 @@ public readonly struct Position
         Span<char> buffer = stackalloc char[64]; // 64 characters should be more than enough to
                                                  // handle all possible formats.
         if (!Line.TryFormat(buffer, out int lineLength, format, formatProvider)) {
-            // Fallback to using a string builder
-            return ToStringWithStringBuilder(format, formatProvider);
+            // Use fallback if span formatting fails
+            return ToStringWithStringInterpolation(format, formatProvider);
         }
         if (!Column.TryFormat(buffer, out int columnLength, format, formatProvider)) {
-            // Fallback to using a string builder
-            return ToStringWithStringBuilder(format, formatProvider);
+            // Use fallback if span formatting fails
+            return ToStringWithStringInterpolation(format, formatProvider);
         }
 
         return string.Create(
             lineLength
             + columnLength
             + nameof(Position).Length
-            + nameof(Line).Length
-            + nameof(Column).Length
-            + 12,
+            + 3,
             this,
             (destination, position) => {
                 position.TryFormat(destination, out _, format, formatProvider);
@@ -236,18 +214,11 @@ public readonly struct Position
         );
     }
 
-    private string ToStringWithStringBuilder(
+    private string ToStringWithStringInterpolation(
         [StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format = null,
         IFormatProvider? formatProvider = null)
     {
-        StringBuilder sb = new();
-        sb.Append($"{nameof(Position)} ({nameof(Line)} = ");
-        sb.Append(Line.ToString(format, formatProvider));
-        sb.Append(", ");
-        sb.Append($"{nameof(Column)} = ");
-        sb.Append(Column.ToString(format, formatProvider));
-        sb.Append(')');
-        return sb.ToString();
+        return $"{nameof(Position)}({Line.ToString(format, formatProvider)}:{Column.ToString(format, formatProvider)})";
     }
 
     /// <summary>

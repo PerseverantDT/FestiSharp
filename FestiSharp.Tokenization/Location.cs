@@ -110,10 +110,12 @@ public readonly struct Location
     {
         Span<char> buffer = stackalloc char[128];
         if (!Start.TryFormat(buffer, out int startLength, format, formatProvider)) {
-            return ToStringWithStringBuilder(format, formatProvider);
+            // Use fallback if span formatting fails
+            return ToStringWithStringInterpolation(format, formatProvider);
         }
         if (!End.TryFormat(buffer, out int endLength, format, formatProvider)) {
-            return ToStringWithStringBuilder(format, formatProvider);
+            // Use fallback if span formatting fails
+            return ToStringWithStringInterpolation(format, formatProvider);
         }
 
         return string.Create(
@@ -123,17 +125,11 @@ public readonly struct Location
         );
     }
 
-    private string ToStringWithStringBuilder(
+    private string ToStringWithStringInterpolation(
         [StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format = null,
         IFormatProvider? formatProvider = null)
     {
-        StringBuilder sb = new();
-        sb.Append($"{nameof(Location)} (");
-        sb.Append(Start.ToString(format, formatProvider));
-        sb.Append(" -> ");
-        sb.Append(End.ToString(format, formatProvider));
-        sb.Append(')');
-        return sb.ToString();
+        return $"{nameof(Location)}({Start.ToString(format, formatProvider)} -> {End.ToString(format, formatProvider)})";
     }
 
     /// <inheritdoc/>
