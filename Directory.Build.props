@@ -2,7 +2,7 @@
     <PropertyGroup Label="Code Properties">
         <TargetFrameworks>netstandard2.1;net8.0;net9.0</TargetFrameworks>
         <Nullable>enable</Nullable>
-        <LangVersion>13</LangVersion>
+        <LangVersion>preview</LangVersion>
         <ImplicitUsings>disable</ImplicitUsings>
         <IsPackable>true</IsPackable>
         <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>

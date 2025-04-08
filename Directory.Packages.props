@@ -1,10 +1,15 @@
 <Project>
     <PropertyGroup>
-        <!-- Enable central package management, https://learn.microsoft.com/en-us/nuget/consume-packages/Central-Package-Management -->
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
         <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     </PropertyGroup>
     <ItemGroup>
-        <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0"/>
+        <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+        <GlobalPackageReference Include="PolySharp" Version="1.15.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </GlobalPackageReference>
+    </ItemGroup>
+    <ItemGroup>
     </ItemGroup>
 </Project>
