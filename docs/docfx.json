@@ -10,7 +10,12 @@
           ]
         }
       ],
-      "dest": "api"
+      "output": "api",
+      "outputFormat": "apiPage",
+      "properties": {
+        "TargetFramework": "net9.0"
+      },
+      "useClrTypeNames": true
     }
   ],
   "build": {
