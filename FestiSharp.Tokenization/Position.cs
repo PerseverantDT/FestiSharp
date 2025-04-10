@@ -98,6 +98,17 @@ public readonly struct Position
     }
 
     /// <summary>
+    /// Deconstructs the position into its component line and column values.
+    /// </summary>
+    /// <param name="line">The line number of the position.</param>
+    /// <param name="column">The column number of the position.</param>
+    public void Deconstruct(out int line, out int column)
+    {
+        line = Line;
+        column = Column;
+    }
+
+    /// <summary>
     /// Checks if a position represents the same position as this instance. Two positions are the
     /// same if they have the same line and column.
     /// </summary>

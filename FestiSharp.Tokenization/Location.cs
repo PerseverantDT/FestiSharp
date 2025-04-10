@@ -143,6 +143,17 @@ public readonly struct Location
     }
 
     /// <summary>
+    /// Deconstructs the location into its component start and end positions.
+    /// </summary>
+    /// <param name="start">The start position of the location.</param>
+    /// <param name="end">The end position of the location.</param>
+    public void Deconstruct(out Position start, out Position end)
+    {
+        start = Start;
+        end = End;
+    }
+
+    /// <summary>
     /// Checks if two locations are equal. Two locations are equal if they have the same start and
     /// end positions.
     /// </summary>
