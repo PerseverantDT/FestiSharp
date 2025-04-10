@@ -31,6 +31,18 @@ public readonly struct Location
     public required Position End { get; init; }
 
     /// <summary>
+    /// Creates a new location instance.
+    /// </summary>
+    /// <param name="start">The start of the location.</param>
+    /// <param name="end">The end of the location.</param>
+    [SetsRequiredMembers]
+    public Location(Position start, Position end)
+    {
+        Start = start;
+        End = end;
+    }
+
+    /// <summary>
     /// Checks if two locations are equal. Two locations are equal if they have the same start and
     /// end positions.
     /// </summary>
