@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "getting-started", "getting-
 		docs\getting-started\toc.yml = docs\getting-started\toc.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FestiSharp.UnitTests", "FestiSharp.UnitTests\FestiSharp.UnitTests.csproj", "{8087E71D-014A-4F89-96C8-7B937C64ADD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{8A49F302-1444-408A-B14E-3690783CC379}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A49F302-1444-408A-B14E-3690783CC379}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A49F302-1444-408A-B14E-3690783CC379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8087E71D-014A-4F89-96C8-7B937C64ADD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8087E71D-014A-4F89-96C8-7B937C64ADD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8087E71D-014A-4F89-96C8-7B937C64ADD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8087E71D-014A-4F89-96C8-7B937C64ADD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
