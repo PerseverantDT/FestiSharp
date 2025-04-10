@@ -31,6 +31,106 @@ public readonly struct Location
     public required Position End { get; init; }
 
     /// <summary>
+    /// Determines whether the specified location completely encloses another location.
+    /// </summary>
+    /// <param name="location">The enclosing location.</param>
+    /// <param name="otherLocation">The location to check for enclosure.</param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="location"/> completely encloses
+    /// <paramref name="otherLocation"/>; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool Encloses(Location location, Location otherLocation)
+    {
+        return location.Start <= otherLocation.Start && location.End >= otherLocation.End;
+    }
+
+    /// <summary>
+    /// Determines whether the specified location overlaps with another location.
+    /// </summary>
+    /// <param name="location">The first location.</param>
+    /// <param name="otherLocation">The second location.</param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="location"/> overlaps with
+    /// <paramref name="otherLocation"/>; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool Overlaps(Location location, Location otherLocation)
+    {
+        return (location.Start <= otherLocation.Start && location.End >= otherLocation.Start)
+            || (location.Start <= otherLocation.End && location.End >= otherLocation.End)
+            || (location.Start >= otherLocation.Start && location.End <= otherLocation.End);
+    }
+
+    /// <summary>
+    /// Determines whether the specified location contains a given position (exclusive end).
+    /// </summary>
+    /// <param name="location">The location.</param>
+    /// <param name="position">The position to check.</param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="location"/> contains <paramref name="position"/>;
+    /// otherwise, <see langword="false"/>. The end position is exclusive.
+    /// </returns>
+    public static bool Contains(Location location, Position position)
+    {
+        return location.Start <= position && position < location.End;
+    }
+
+    /// <summary>
+    /// Determines whether the specified location contains a given position (inclusive end).
+    /// </summary>
+    /// <param name="location">The location.</param>
+    /// <param name="position">The position to check.</param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="location"/> contains <paramref name="position"/>;
+    /// otherwise, <see langword="false"/>. The end position is inclusive.
+    /// </returns>
+    public static bool ContainsClosed(Location location, Position position)
+    {
+        return location.Start <= position && position <= location.End;
+    }
+
+    /// <summary>
+    /// Creates a new location that encompasses both specified locations.
+    /// </summary>
+    /// <param name="location">The first location.</param>
+    /// <param name="otherLocation">The second location.</param>
+    /// <returns>
+    /// A new <see cref="Location"/> that starts at the earliest start position and ends at the
+    /// latest end position of the two input locations.
+    /// </returns>
+    public static Location Extend(Location location, Location otherLocation)
+    {
+        return new Location(
+            location.Start < otherLocation.Start ? location.Start : otherLocation.Start,
+            location.End > otherLocation.End ? location.End : otherLocation.End
+        );
+    }
+
+    /// <summary>
+    /// Shifts the provided location in response to a change in script contents that occurred
+    /// elsewhere.
+    /// </summary>
+    /// <param name="location">The location to shift.</param>
+    /// <param name="start">The position where the content change starts.</param>
+    /// <param name="oldEnd">
+    /// The position immediately after the text that was originally present before the change.
+    /// </param>
+    /// <param name="newEnd">
+    /// The position immediately after the text that is now present after the change.
+    /// </param>
+    /// <returns>A new <see cref="Location"/> representing the shifted region.</returns>
+    public static Location Shift(
+        Location location,
+        Position start,
+        Position oldEnd,
+        Position newEnd)
+    {
+        return new Location(
+            Position.Shift(location.Start, start, oldEnd, newEnd),
+            Position.Shift(location.End, start, oldEnd, newEnd)
+        );
+    }
+
+    /// <summary>
     /// Creates a new location instance.
     /// </summary>
     /// <param name="start">The start of the location.</param>

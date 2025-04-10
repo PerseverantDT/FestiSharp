@@ -57,6 +57,35 @@ public readonly struct Position
     }
 
     /// <summary>
+    /// Shifts the provided position in response to a change in script contents that occurred
+    /// elsewhere.
+    /// </summary>
+    /// <param name="position">The position to shift.</param>
+    /// <param name="start">The position where the content change starts.</param>
+    /// <param name="oldEnd">
+    /// The position immediately after the text that was originally present before the change.
+    /// </param>
+    /// <param name="newEnd">
+    /// The position immediately after the text that is now present after the change.
+    /// </param>
+    public static Position Shift(
+        Position position,
+        Position start,
+        Position oldEnd,
+        Position newEnd)
+    {
+        if (position < start) {
+            return position;
+        }
+
+        if (position.Line > oldEnd.Line) {
+            return new Position(position.Line + (newEnd.Line - oldEnd.Line), position.Column);
+        }
+
+        return new Position(newEnd.Line, newEnd.Column - oldEnd.Column);
+    }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Position"/> struct.
     /// </summary>
     /// <param name="line">The line where the item is positioned.</param>
